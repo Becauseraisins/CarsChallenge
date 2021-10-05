@@ -26,11 +26,11 @@ namespace CarsApi.Handlers
 
                 SqlCommand command = new SqlCommand(query, connection);
 
-                SqlParameter nameParam = new SqlParameter();
-                nameParam.ParameterName = "@registration";
-                nameParam.Value = rego;
+                SqlParameter modelParam = new SqlParameter();
+                modelParam.ParameterName = "@registration";
+                modelParam.Value = rego;
 
-                command.Parameters.Add(nameParam);
+                command.Parameters.Add(modelParam);
 
                 connection.Open();
 
@@ -61,7 +61,7 @@ namespace CarsApi.Handlers
                 speedParam.Value = foundcar.Speed;
 
                 command.Parameters.Add(speedParam);
-                command.Parameters.Add(nameParam);
+                command.Parameters.Add(modelParam);
                 connection.Open();
                 rowsaffected = command.ExecuteNonQuery();
                 if (rowsaffected > 0)
@@ -83,11 +83,11 @@ namespace CarsApi.Handlers
 
                 SqlCommand command = new SqlCommand(query, connection);
 
-                SqlParameter nameParam = new SqlParameter();
-                nameParam.ParameterName = "@registration";
-                nameParam.Value = rego;
+                SqlParameter modelParam = new SqlParameter();
+                modelParam.ParameterName = "@registration";
+                modelParam.Value = rego;
 
-                command.Parameters.Add(nameParam);
+                command.Parameters.Add(modelParam);
 
                 connection.Open();
 
@@ -118,7 +118,7 @@ namespace CarsApi.Handlers
                 speedParam.Value = foundcar.Speed;
 
                 command.Parameters.Add(speedParam);
-                command.Parameters.Add(nameParam);
+                command.Parameters.Add(modelParam);
                 connection.Open();
                 rowsaffected = command.ExecuteNonQuery();
                 if (rowsaffected > 0)
@@ -161,11 +161,11 @@ namespace CarsApi.Handlers
 
                 SqlCommand command = new SqlCommand(query, connection);
 
-                SqlParameter nameParam = new SqlParameter();
-                nameParam.ParameterName = "@registration";
-                nameParam.Value = rego;
+                SqlParameter modelParam = new SqlParameter();
+                modelParam.ParameterName = "@registration";
+                modelParam.Value = rego;
 
-                command.Parameters.Add(nameParam);
+                command.Parameters.Add(modelParam);
 
                 connection.Open();
 
@@ -194,11 +194,11 @@ namespace CarsApi.Handlers
 
                 SqlCommand command = new SqlCommand(query, connection);
 
-                SqlParameter nameParam = new SqlParameter();
-                nameParam.ParameterName = "@registration";
-                nameParam.Value = rego;
+                SqlParameter modelParam = new SqlParameter();
+                modelParam.ParameterName = "@registration";
+                modelParam.Value = rego;
 
-                command.Parameters.Add(nameParam);
+                command.Parameters.Add(modelParam);
 
                 connection.Open();
 
@@ -217,6 +217,64 @@ namespace CarsApi.Handlers
                 }
                 return $"{foundcar.Rego} is {foundcar.GetAge()} years old";
 
+            }
+        }
+        public int AddCar(Car car){
+            int rowsaffected=0;
+            string query ="INSERT INTO car VALUES(@registration,@make,@model,@year,@speed)";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query,connection);
+                connection.Open();
+
+                SqlParameter regoParam = new SqlParameter();
+                regoParam.ParameterName = "@registration";
+                regoParam.Value = car.Rego;
+
+                SqlParameter makeParam = new SqlParameter();
+                makeParam.ParameterName = "@make";
+                makeParam.Value = car.Make;
+
+                SqlParameter modelParam = new SqlParameter();
+                modelParam.ParameterName = "@model";
+                modelParam.Value = car.Model;
+
+                SqlParameter yearParam = new SqlParameter();
+                yearParam.ParameterName = "@year";
+                yearParam.Value = car.Year;                
+                
+                SqlParameter speedParam = new SqlParameter();
+                speedParam.ParameterName = "@speed";
+                speedParam.Value = car.Speed;   
+
+                command.Parameters.Add(regoParam);
+                command.Parameters.Add(makeParam);
+                command.Parameters.Add(modelParam);
+                command.Parameters.Add(yearParam);
+                command.Parameters.Add(speedParam);
+                rowsaffected = command.ExecuteNonQuery();
+            }
+            return rowsaffected;
+        }
+        public string Delete(string rego)
+        {
+            string query = "DELETE FROM Car WHERE registration = @registration";
+            int result;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(query, connection);
+
+                SqlParameter modelParam = new SqlParameter();
+                modelParam.ParameterName = "@registration";
+                modelParam.Value = rego;
+
+                command.Parameters.Add(modelParam);
+
+                connection.Open();
+
+                result = command.ExecuteNonQuery();
+                return $"Rows affected:{result}";
             }
         }
 

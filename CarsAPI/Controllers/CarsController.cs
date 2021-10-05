@@ -18,6 +18,10 @@ namespace CarsAPI.Controllers {
         public List<Car> Get(){
             return this.dbh.GetAllCars();
         }
+        [HttpPost]
+        public int AddNewCar(Car NewCar){
+            return this.dbh.AddCar(NewCar);
+        }
         [HttpGet("{name}")]
         public Car GetCar(string name){
             return this.dbh.GetCar(name);
@@ -34,7 +38,10 @@ namespace CarsAPI.Controllers {
         public string ReduceCarSpeed(string name, int speed){
             return this.dbh.ReduceSpeed(name, speed);
         }
-
+        [HttpDelete("{name}")]
+        public string DeleteCar(string name){
+            return this.dbh.Delete(name);
+        }
     }
 }
  
